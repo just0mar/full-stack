@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery Animated Square</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #eee;
+    }
+
+    #square {
+      width: 100px;
+      height: 100px;
+      background-color: #1abc9c;
+      border: 4px dashed #8e44ad;
+      position: relative;
+    }
+
+    .controls {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .controls button {
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Animations */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes jump {
+      0%   { top: 0; }
+      30%  { top: -100px; }
+      100% { top: 0; }
+    }
+
+    @keyframes bounce {
+      0%   { top: 0; }
+      25%  { top: -60px; }
+      50%  { top: 0; }
+      75%  { top: -30px; }
+      100% { top: 0; }
+    }
+
+    .spinning {
+      animation: spin 2s linear infinite;
+    }
+
+    .jumping {
+      animation: jump 0.6s ease;
+    }
+
+    .bouncing {
+      animation: bounce 1s ease;
+    }
+
+    .zoomed-in {
+      transform: scale(1.5);
+      transition: transform 0.5s ease;
+    }
+
+    .zoomed-out {
+      transform: scale(0.5);
+      transition: transform 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="square"></div>
+
+  <div class="controls">
+    <button id="spinBtn">Spin</button>
+    <button id="bounceBtn">Bounce</button>
+    <button id="slideBtn">Slide</button>
+    <button id="colorBtn">Change Color</button>
+    <button id="fadeBtn">Fade In/Out</button>
+    <button id="zoomInBtn">Zoom In</button>
+    <button id="zoomOutBtn">Zoom Out</button>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      let spinning = false;
+      let fadedOut = false;
+
+      $('#spinBtn').click(function () {
+        spinning = !spinning;
+        $('#square').toggleClass('spinning', spinning);
+        $(this).text(spinning ? 'Stop Spin' : 'Spin');
+      });
+
+     
+
+      $('#bounceBtn').click(function () {
+        $('#square').addClass('bouncing');
+        setTimeout(() => {
+          $('#square').removeClass('bouncing');
+        }, 1000);
+      });
+
+      $('#slideBtn').click(function () {
+        $('#square').animate({ left: '+=150px' }, 500)
+                    .animate({ left: '-=150px' }, 500);
+      });
+
+      $('#colorBtn').click(function () {
+        const colors = ['#e74c3c', '#f1c40f', '#2ecc71', '#9b59b6', '#3498db'];
+        const randColor = colors[Math.floor(Math.random() * colors.length)];
+        $('#square').css('background-color', randColor);
+      });
+
+      $('#fadeBtn').click(function () {
+        if (!fadedOut) {
+          $('#square').fadeOut(400);
+        } else {
+          $('#square').fadeIn(400);
+        }
+        fadedOut = !fadedOut;
+      });
+
+      $('#zoomInBtn').click(function () {
+        $('#square').removeClass('zoomed-out').addClass('zoomed-in');
+      });
+
+      $('#zoomOutBtn').click(function () {
+        $('#square').removeClass('zoomed-in').addClass('zoomed-out');
+      });
+    });
+  </script>
+
+</body>
+</html>
